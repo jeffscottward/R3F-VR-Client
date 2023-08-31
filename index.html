@@ -5,37 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>R3F VR Client</title>
     <!-- Babel + Shim + Imports -->
-    <script src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"></script>
     <script
       async
-      src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+      src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"
     ></script>
     <script type="importmap">
       {
         "imports": {
-          "react": "https://unpkg.com/react@18.2.0/umd/react.production.min.js",
-          "react-dom": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js",
-          "three": "https://unpkg.com/three@0.153/build/three.module.js",
-          "three-addons/": "https://unpkg.com/three@0.153/examples/jsm/",
-          "@react-three/fiber": "https://unpkg.com/react-three-fiber/dist/react-three-fiber.cjs.prod.js",
-          "@react-three/drei": "https://unpkg.com/@react-three/drei"
+          "react": "https://esm.sh/react",
+          "react-dom": "https://esm.sh/react-dom",
+          "three": "https://esm.sh/three",
+          "three-addons/": "https://esm.sh/three@0.156/examples/jsm/",
+          "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.13.7",
+          "@react-three/drei": "https://esm.sh/@react-three/drei@9.80.9"
         }
       }
     </script>
   </head>
   <body>
     <div id="root" />
+    <script type="module">
+      import React, { useRef } from "react";
+      import ReactDOM, { createRoot } from "react-dom";
+      import * as THREE from "three";
+      import { RoomEnvironment } from "three-addons/environments/RoomEnvironment.js";
+      import { Canvas, useFrame } from "@react-three/fiber";
+      import { Box } from "@react-three/drei";
+
+      console.log({ React });
+      console.log({ ReactDOM, createRoot });
+      console.log({ THREE });
+      console.log({ RoomEnvironment });
+      console.log({ Canvas });
+      console.log({ Box });
+      window.React = React;
+      window.useRef = useRef;
+      window.useFrame = useFrame;
+      window.ReactDOM = ReactDOM;
+      window.THREE = THREE;
+      window.RoomEnvironment = RoomEnvironment;
+      window.createRoot = createRoot;
+      window.Canvas = Canvas;
+      window.Box = Box;
+    </script>
     <script
       type="text/babel"
       data-type="module"
       data-presets="env,react,typescript"
     >
+      // import { createRoot } from "react-dom";
       // const HelloWorld = () => <div>Hello From React</div>;
       // ReactDOM.render(<HelloWorld />, document.querySelector("#root"));
-
-      import React, { useRef } from "react";
-      import { Canvas, useFrame } from "@react-three/fiber";
-      import { Box } from "@react-three/drei";
 
       const Scene = () => {
         const scene = useRef();
