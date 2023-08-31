@@ -9,6 +9,7 @@
       async
       src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"
     ></script>
+    <!-- * * ESM.sh gives us a great CDN for ESM modules w/ lots of options! **/ -->
     <script type="importmap">
       {
         "imports": {
@@ -32,12 +33,12 @@
       import { Canvas, useFrame } from "@react-three/fiber";
       import { Box } from "@react-three/drei";
 
-      console.log({ React });
-      console.log({ ReactDOM, createRoot });
-      console.log({ THREE });
-      console.log({ RoomEnvironment });
-      console.log({ Canvas });
-      console.log({ Box });
+      /**
+       * ! Wthout window reassignment the imported modules are
+       * ! not available in the JSX trasnfromed Babel script below.
+       * ! This is a hacky workaround to deal with Babel/standalone issue.
+       *
+       **/
       window.React = React;
       window.useRef = useRef;
       window.useFrame = useFrame;
@@ -53,9 +54,10 @@
       data-type="module"
       data-presets="env,react,typescript"
     >
-      // import { createRoot } from "react-dom";
-      // const HelloWorld = () => <div>Hello From React</div>;
-      // ReactDOM.render(<HelloWorld />, document.querySelector("#root"));
+      /**
+       * import React from "react";
+       * ! Uncaught ReferenceError: require is not defined
+       **/
 
       const Scene = () => {
         const scene = useRef();
