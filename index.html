@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>R3F VR Client</title>
+    <style>
+      html, body, #root { 
+        height: 100%; 
+        width: 100%;
+        margin: 0;
+      }
+    </style>
     <!-- Babel + Shim + Imports -->
-    <script
-      async
-      src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"
-    ></script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"></script>
     <!-- * * ESM.sh gives us a great CDN for ESM modules w/ lots of options! **/ -->
     <script type="importmap">
       {
         "imports": {
           "react": "https://esm.sh/react",
-          "react-dom": "https://esm.sh/react-dom",
+          "react-dom": "https://esm.sh/react-dom/client",
+          "react-use-measure": "https://esm.sh/react-use-measure@2.1.1",
           "three": "https://esm.sh/three",
           "three-addons/": "https://esm.sh/three@0.156/examples/jsm/",
           "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.13.7",
@@ -25,56 +30,29 @@
   </head>
   <body>
     <div id="root" />
-    <script type="module">
+    <script type="text/babel" data-type="module" data-presets="react">
       import React, { useRef } from "react";
       import ReactDOM, { createRoot } from "react-dom";
-      import * as THREE from "three";
-      import { RoomEnvironment } from "three-addons/environments/RoomEnvironment.js";
       import { Canvas, useFrame } from "@react-three/fiber";
       import { Box } from "@react-three/drei";
-
-      /**
-       * ! Wthout window reassignment the imported modules are
-       * ! not available in the JSX trasnfromed Babel script below.
-       * ! This is a hacky workaround to deal with Babel/standalone issue.
-       *
-       **/
-      window.React = React;
-      window.useRef = useRef;
-      window.useFrame = useFrame;
-      window.ReactDOM = ReactDOM;
-      window.THREE = THREE;
-      window.RoomEnvironment = RoomEnvironment;
-      window.createRoot = createRoot;
-      window.Canvas = Canvas;
-      window.Box = Box;
-    </script>
-    <script
-      type="text/babel"
-      data-type="module"
-      data-presets="env,react,typescript"
-    >
-      /**
-       * import React from "react";
-       * ! Uncaught ReferenceError: require is not defined
-       **/
+      import useMeasure from "react-use-measure";
 
       const Scene = () => {
-        const scene = useRef();
+        const boxRef = useRef();
+
         useFrame(() => {
-          scene.current.rotation.y += 0.04;
-          scene.current.rotation.x += 0.04;
-          scene.current.rotation.z += 0.04;
+          boxRef.current.rotation.y += 0.04;
+          boxRef.current.rotation.x += 0.04;
+          boxRef.current.rotation.z += 0.04;
         });
         return (
-          <group ref={scene}>
-            <Box>
-              <meshLambertMaterial color='white' />
+          <group>
+            <Box ref={boxRef} args={[2, 2, 2]}>
+              <meshStandardMaterial color='white' />
             </Box>
           </group>
         );
       };
-
       const App = () => {
         return (
           <Canvas>
@@ -83,8 +61,7 @@
           </Canvas>
         );
       };
-
-      createRoot(document.querySelector("#root")).render(<App />);
+      createRoot(document.getElementById("root")).render(<App />);
     </script>
   </body>
 </html>
