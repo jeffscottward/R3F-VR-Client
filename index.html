@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>R3F VR Client</title>
     <style>
-      html, body, #root { 
-        height: 100%; 
+      html,
+      body,
+      #root {
+        height: 100%;
         width: 100%;
         margin: 0;
       }
@@ -41,9 +43,9 @@
         const boxRef = useRef();
 
         useFrame(() => {
-          boxRef.current.rotation.y += 0.04;
-          boxRef.current.rotation.x += 0.04;
-          boxRef.current.rotation.z += 0.04;
+          boxRef.current.rotation.y += 0.02;
+          boxRef.current.rotation.x += 0.02;
+          boxRef.current.rotation.z += 0.02;
         });
         return (
           <group>
