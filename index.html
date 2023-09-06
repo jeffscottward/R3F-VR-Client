@@ -25,28 +25,13 @@
     <!-- Babel + Shim + Imports -->
     <script src="https://unpkg.com/@babel/standalone@7.22.14/babel.min.js"></script>
     <!-- * * ESM.sh gives us a great CDN for ESM modules w/ lots of options! **/ -->
-    <script>
-      const deps = [
-        "react",
-        "react-dom",
-        "react-use-measure",
-        "three",
-        "three-addons/",
-        "@react-three/fiber",
-        "@react-three/drei",
-        "@monaco-editor/react",
-      ];
-    </script>
     <script type="importmap">
       {
         "imports": {
           "react": "https://esm.sh/react",
           "react-dom": "https://esm.sh/react-dom/client",
-          "react-use-measure": "https://esm.sh/react-use-measure@2.1.1",
-          "three": "https://esm.sh/three",
-          "three-addons/": "https://esm.sh/three@0.156/examples/jsm/",
-          "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.13.7",
-          "@react-three/drei": "https://esm.sh/@react-three/drei@9.80.9",
+          "@react-three/fiber": "https://esm.sh/@react-three/fiber",
+          "@react-three/drei": "https://esm.sh/@react-three/drei",
           "@monaco-editor/react": "https://esm.sh/@monaco-editor/react"
         }
       }
@@ -55,11 +40,13 @@
   <body>
     <div id="root" />
     <script type="text/babel" data-type="module" data-presets="react">
-      import React, { useRef } from "react";
+      import React, { useRef, useState } from "react";
       import ReactDOM, { createRoot } from "react-dom";
       import { Canvas, useFrame } from "@react-three/fiber";
+      import { Box } from "@react-three/drei";
       import Editor from "@monaco-editor/react";
 
+      // DREI Imports
       import {
         Environment,
         OrbitControls,
@@ -67,7 +54,8 @@
         Html,
       } from "@react-three/drei";
 
-      const App = () => {
+      // DREI Scene
+      const Scene = () => {
         const editorRef = useRef(null);
         const [code, setCode] = React.useState(
           `function add(a, b) {\n  return a + b;\n}`
@@ -76,9 +64,7 @@
         const handleEditorDidMount = (editor, monaco) =>
           (editorRef.current = editor);
         return (
-          <Canvas>
-            <OrbitControls />
-            <Environment preset='warehouse' />
+          <>
             <Grid
               position={[0, -3, 0]}
               args={[20, 20]}
@@ -108,6 +94,16 @@
               />
               <button onClick={logEditorValue}>Show value</button>
             </Html>
+          </>
+        );
+      };
+
+      const App = () => {
+        return (
+          <Canvas>
+            <OrbitControls />
+            <Environment preset='warehouse' />
+            <Scene />
           </Canvas>
         );
       };
